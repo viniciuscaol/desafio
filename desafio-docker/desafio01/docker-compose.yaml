@@ -1,0 +1,34 @@
+# Questão 01
+# Crie um docker compose com o banco de dados MongoDB e a ferramenta de interface 
+#Mongo Express (https://github.com/mongo-express/mongo-express). 
+#Assim, você terá um ambiente em containers pra utilizar esse banco de dados.
+
+version: '3.8'
+
+networks: 
+  questao01:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports: 
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopwd
+    networks:
+      - questao01
+
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongouser
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongopwd
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    networks:
+      - questao01
