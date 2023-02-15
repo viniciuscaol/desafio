@@ -1,0 +1,31 @@
+# Questão 03
+# Mais um banco de dados bastante utilizado no mercado.
+# Crie um docker compose com o banco de dados PostgreSQL e a 
+# ferramenta de interface pgAdmin (https://www.pgadmin.org).
+
+version: '3.8'
+
+networks: 
+  questao03:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgresuser
+      POSTGRES_PASSWORD: postgrespwd
+    networks:
+      - questao03
+
+  pgadim:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+     - 8080:80
+     - 443:8443
+    networks:
+      - questao03
