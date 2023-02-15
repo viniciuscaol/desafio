@@ -1,0 +1,31 @@
+# Questão 04
+# Último exercício com banco de dados! 
+# Crie um docker compose com o banco de dados Redis e a 
+# ferramenta de interface Redis Commander (https://hub.docker.com/r/rediscommander/redis-commander).
+
+version: '3.8'
+
+networks: 
+  questao04:
+    driver: bridge
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - questao04
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"
+    networks:
+      - questao04
