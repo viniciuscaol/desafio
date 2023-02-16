@@ -4,5 +4,6 @@ O objetivo aqui é fazer o fork de 3 repositórios, com aplicações diferentes
 (estão logo abaixo) e criar o Dockerfile e o docker compose pra subir as aplicações em containers.
 
 Aplicação escrita em NodeJS X
-Aplicação escrita em Python utilizando Flask Aplicação escrita em C# utilizando ASP.NET Core
+Aplicação escrita em Python utilizando Flask Aplicação escrita em C# utilizando 
+ASP.NET Core
 Coloca aqui abaixo o link dos 3 repositórios que você subir a solução.
