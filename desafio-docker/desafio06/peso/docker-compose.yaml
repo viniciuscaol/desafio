@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  conversao-temp:
+    image: viniciuscaol/conversao-peso:v1
+    container_name: conversao-peso
+    ports:
+      - 80:80
