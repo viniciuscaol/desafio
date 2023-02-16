@@ -1,0 +1,37 @@
+# Questão 05
+# Excelente! Depois de fixar a criação de ambientes em containers para banco de dados, 
+# o objetivo agora é subir uma solução já existente no mercado: 
+# uma solução Wordpress em containers !!! 
+# Crie o seu docker compose utilizando a imagem oficial do Wordpress:
+# https://hub.docker.com/_/wordpress
+
+version: '3.8'
+
+networks: 
+  questao05:
+    driver: bridge
+
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb  
+    networks:
+      - questao05
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    networks:
+      - questao05
