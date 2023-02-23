@@ -1,0 +1,38 @@
+# Criar um cluster Kubernetes (da forma que for mais interessante pra você) e 
+# colocar a aplicação conversão de temperatura (https://github.com/KubeDev/conversao-temperatura) 
+# pra rodar no cluster Kubernetes. 
+# Não esquece de adicionar o manifesto do Kubernetes no repositório que você está usando e me mandar o endereço.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conversao-temp
+spec:
+  selector:
+    matchLabels:
+      app: conversao-temp
+  template:
+    metadata:
+      labels:
+        app: conversao-temp
+    spec:
+      containers:
+      - name: conversao-temp
+        image: viniciuscaol/conversao-temp:v1
+        resources: {}
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversao-temp-service
+spec:
+  selector:
+    app: conversao-temp
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer

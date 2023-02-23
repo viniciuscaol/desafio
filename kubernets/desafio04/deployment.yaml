@@ -1,0 +1,97 @@
+# Vamos aumentar a complexidade… Chegou a hora de subir uma aplicação completa !!! 
+# Com a camada web e de banco de dados. 
+# Então o desafio agora é colocar a aplicação pedelogo-catalogo (https://github.com/KubeDev/pedelogo-catalogo) 
+# no ar junto com o banco de dados Mongo pra aplicação persistir os dados. 
+# Não esquece de dar uma olhada no README e não se preocupe por enquanto com configmap, secrets e volumes…. 
+# A hora pra aprimorar o deploy vai chegar…..
+# Depois de montar o deploy, coloca o link para o repositório no GitHub com os manifestos.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pedelogo-catalogo
+spec:
+  selector:
+    matchLabels:
+      app: pedelogo-catalogo
+  template:
+    metadata:
+      labels:
+        app: pedelogo-catalogo
+    spec:
+      containers:
+      - name: pedelogo-catalogo
+        image: viniciuscaol/pedelogo-catalogo:v1.0.0
+        resources: {}
+        ports:
+        - containerPort: 80
+          name: http
+        imagePullPolicy: Always
+        env:
+        - name: Mongo__Host
+          value: mongo-service
+        - name: Mongo__User
+          value: mongouser
+        - name: Mongo__Password
+          value: mongopwd
+        - name: Mongo__Port
+          value: "27017"
+        - name: Mongo__DataBase
+          value: admin
+
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pedelogo-catalogo-service
+spec:
+  selector:
+    app: pedelogo-catalogo
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        resources: {}
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: mongouser
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: mongopwd      
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+  - port: 27017
+    targetPort: 27017
+  type: ClusterIP
